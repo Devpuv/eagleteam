@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Eagle Team | Scratch Oyun Dağıtımı</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: radial-gradient(ellipse at center, #020617 0%, #0b1020 50%, #1e1b4b 100%),
+                        linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 50%, transparent 100%);
+            color: #e5e7eb;
+            overflow-y: auto;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Hareketli Yıldızlar (Havalı Renkler Eklendi) */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: linear-gradient(45deg, #fff, #3b82f6, #9333ea);
+            border-radius: 50%;
+            animation: twinkleCool 5s infinite ease-in-out;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+        }
+
+        @keyframes twinkleCool {
+            0%, 100% { opacity: 0.1; transform: scale(1) rotate(0deg); }
+            50% { opacity: 1; transform: scale(2.5) rotate(180deg); }
+        }
+
+        /* Parçacık Efekti (Havalı Hız ve Renk) */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(45deg, #eab308, #3b82f6, #9333ea);
+            border-radius: 50%;
+            animation: floatCool 4s infinite linear;
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.9);
+        }
+
+        @keyframes floatCool {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(1080deg) scale(1.5); opacity: 0; }
+        }
+
+        header {
+            background: radial-gradient(circle at top, #0f172a, #020617, #1e1b4b);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 4px solid #1e293b;
+            box-shadow: 0 0 80px rgba(234, 179, 8, 1.2), 0 0 40px rgba(59, 130, 246, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 45px;
+            letter-spacing: 5px;
+            color: #eab308;
+            text-shadow: 0 0 50px rgba(234, 179, 8, 1.5), 0 0 100px rgba(59, 130, 246, 0.8), 0 0 150px rgba(147, 51, 234, 0.5);
+            animation: ultraGlowCool 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes ultraGlowCool {
+            from { filter: hue-rotate(0deg) brightness(1) saturate(1); }
+            to { filter: hue-rotate(360deg) brightness(1.3) saturate(1.5); }
+        }
+
+        header p {
+            margin-top: 25px;
+            font-size: 22px;
+            color: #fde68a;
+            text-shadow: 0 0 30px rgba(253, 230, 138, 1.2);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 70px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2.section {
+            margin-top: 0;
+            font-size: 35px;
+            color: #93c5fd;
+            border-left: 7px solid #2563eb;
+            padding-left: 25px;
+            text-shadow: 0 0 25px rgba(147, 197, 253, 1.2);
+            animation: ultraSlideCool 2s ease-out;
+        }
+
+        @keyframes ultraSlideCool {
+            from { transform: translateX(-200px) scale(0.5) rotate(-10deg); opacity: 0; }
+            to { transform: translateX(0) scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .game {
+            background: linear-gradient(160deg, #020617, #020617cc, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.1));
+            border: 4px solid #1e293b;
+            border-radius: 30px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 0 60px rgba(234, 179, 8, 0.5), 0 0 30px rgba(59, 130, 246, 0.4), inset 0 0 25px rgba(147, 51, 234, 0.2);
+            transition: all 0.7s ease;
+            transform-style: preserve-3d;
+            perspective: 1500px;
+            animation: ultraCardCool 2s ease-out forwards;
+            opacity: 0;
+            position: relative;
+        }
+
+        @keyframes ultraCardCool {
+            0% { opacity: 0; transform: rotateY(-90deg) translateZ(-100px) scale(0.8); }
+            50% { opacity: 0.5; transform: rotateY(-45deg) translateZ(-50px) scale(0.9); }
+            100% { opacity: 1; transform: rotateY(0deg) translateZ(0) scale(1); }
+        }
+
+        .game:hover {
+            transform: rotateY(20deg) translateZ(50px) scale(1.12);
+            box-shadow: 0 30px 80px rgba(234, 179, 8, 1), 0 15px 40px rgba(59, 130, 246, 0.8), 0 0 120px rgba(147, 51, 234, 0.6);
+            border-color: #3b82f6;
+            background: linear-gradient(160deg, #020617, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.2));
+        }
+
+        .game h3 {
+            margin: 0 0 30px;
+            font-size: 30px;
+            color: #fde68a;
+            text-shadow: 0 0 25px rgba(253, 230, 138, 1.2);
+        }
+
+        .download {
+            display: inline-block;
+            margin-top: 35px;
+            padding: 20px 36px;
+            background: linear-gradient(135deg, #eab308, #ca8a04, #f59e0b, #fbbf24, #3b82f6, #10b981);
+            color: #020617;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            transition: all 0.6s ease;
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0);
+        }
+
+        .download::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -200%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+            transition: left 0.8s;
+        }
+
+        .download:hover::before {
+            left: 200%;
+        }
+
+        .download:hover {
+            filter: brightness(1.5) hue-rotate(120deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            transform: scale(1.2) rotate(5deg) translateZ(15px);
+        }
+
+        .download:active {
+            transform: scale(0.85) translateZ(10px);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 18px;
+            color: #94a3b8;
+            padding: 35px;
+            border-top: 3px solid #1e293b;
+            background: rgba(2, 6, 23, 0.95);
+            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .game {
+                padding: 30px;
+                margin: 40px 0;
+            }
+            header h1 {
+                font-size: 35px;
+            }
+            .download {
+                padding: 18px 32px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stars">
+    <!-- Daha Fazla Havalı Yıldız -->
+    <div class="star" style="top: 5%; left: 10%; animation-delay: 0s;"></div>
+    <div class="star" style="top: 10%; left: 30%; animation-delay: 0.5s;"></div>
+    <div class="star" style="top: 15%; left: 50%; animation-delay: 1s;"></div>
+    <div class="star" style="top: 20%; left: 70%; animation-delay: 1.5s;"></div>
+    <div class="star" style="top: 25%; left: 90%; animation-delay: 2s;"></div>
+    <div class="star" style="top: 30%; left: 20%; animation-delay: 2.5s;"></div>
+    <div class="star" style="top: 35%; left: 40%; animation-delay: 3s;"></div>
+    <div class="star" style="top: 40%; left: 60%; animation-delay: 3.5s;"></div>
+    <div class="star" style="top: 45%; left: 80%; animation-delay: 0s;"></div>
+    <div class="star" style="top: 50%; left: 15%; animation-delay: 0.5s;"></div>
+    <div class="star" style="top: 55%; left: 35%; animation-delay: 1s;"></div>
+    <div class="star" style="top: 60%; left: 55%; animation-delay: 1.5s;"></div>
+    <div class="star" style="top: 65%; left: 75%; animation-delay: 2s;"></div>
+    <div class="star" style="top: 70%; left: 5%; animation-delay: 2.5s;"></div>
+    <div class="star" style="top: 75%; left: 25%; animation-delay: 3s;"></div>
+    <div class="star" style="top: 80%; left: 45%; animation-delay: 3.5s;"></div>
+    <div class="star" style="top: 85%; left: 65%; animation-delay: 0s;"></div>
+    <div class="star" style="top: 90%; left: 85%; animation-delay: 0.5s;"></div>
+    <div class="star" style="top: 95%; left: 10%; animation-delay: 1s;"></div>
+</div>
+
+<div class="particles">
+    <!-- Daha Fazla Havalı Parçacık -->
+    <div class="particle" style="left: 5%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 15%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="left: 25%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 35%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="left: 45%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 55%; animation-delay: 2.5s;"></div>
+    <div class="particle" style="left: 65%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 75%; animation-delay: 3.5s;"></div>
+    <div class="particle" style="left: 85%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 95%; animation-delay: 0.5s;"></div>
+</div>
+
+<!-- Sakin Arka Plan Müziği (Chill Ambient) -->
+<audio id="bgMusic" loop preload="none">
+    <source src="https://www.soundjay.com/misc/sounds/ambient-space-01.wav" type="audio/wav"> <!-- Sakin, ambient uzay müziği -->
+</audio>
+<button onclick="document.getElementById('bgMusic').play()" style="position: fixed; top: 10px; right: 10px; z-index: 10; background: rgba(59, 130, 246, 0.8); color: white; border: none; padding: 10px; border-radius: 10px;">🎵 Sakin Müzik Aç</button>
+
+<header>
+    <h1>🦅 Eagle Team</h1>
+    <p>Sadece Scratch 3 Offline Editor ile yapılan oyunlar</p>
+</header>
+
+<main>
+
+    <h2 class="section">🎮 Yayınlanan Scratch Oyunları</h2>
+
+    <div class="game">
+        <h3>🧮🔢📐 Matematik – Kesirlerle İşlemler</h3>
+        <a class="download" href="https://download1326.mediafire.com/wzlluz382mpgda44dh8YSYeAjIPTGQY1WWyf1NjYg80j3X4yzH0lolA3rl6y4ETMIvb3BPUZmEEymeDajZ0sqCHVe3uTzza9zJqsy9yoyCwXgSm3JqVYFx84_WbbeisVA45pTa0wwL00nuFjRn2g77O8Raa0KeXfX54QmK0IkJq0/0j7hnt3j15mi7p2/Matematik+Kesirler+ile+i%C5%9Flemler+%28Windows+64x%29.zip">Windows 10 (64x) İndir</a>
+        <br><br>
+        <a class="download" href="https://download947.mediafire.com/a8ilzy45omngkd6cl_7GrXKHhVuNrgXqB4pD9WXsKacpOqBQ-lKH5AH6i8OaMq9-byt_8jH6wMy4Bs3L-ddosE8VKfR_AnxizUFjuYnhKFw1hC_DrMMH6jX-USEfbo-Rjz-oP-8XTKrabcxZ7bs-KPbdD7F2qV4yry9zy1GyKaQJ/b7dat6j2k6857oj/Matematik_7._S%C4%B1n%C4%B1f.sb3">Scratch Kaynak Kodunu İndir (.sb3)</a>
+        <br><br>
+        <a class="download" href="https://download1324.mediafire.com/pl02mq89f2iggLvB3sr_eYPWKeFbt7StThBlDm7ZkFqs7JBcUmAAN13GVbn5SpyYoQDlu8Nkv8QZoRHHkJSzqV8nae05j2rHG8wjs1FnO-AzDW_ngWqgba_n4oSXi6shmj-Tfazt1j1HteQje2YNEy4iAvM74v4Jy0reCsSfY62v/s68551yxfb6o99i/Matematik+7.+S%C4%B1n%C4%B1f+Kesirlerle+%C4%B0%C5%9Flemler.html">HTML Versiyonu İndir</a>
+    </div>
+
+</main>
+
+<footer>
+    Eagle Team • Scratch tabanlı okul projeleri
+</footer>
+
+</body>
+</html
